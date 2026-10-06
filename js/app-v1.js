@@ -25,6 +25,15 @@ import { profile, settings } from "./views/profile.js";
 import { refreshTimer } from "./timer.js";
 import { initializeAuth, rememberDestination, authDestination } from "./auth-session.js";
 import { finishGmailPermission } from "./gmail-permission.js";
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("/sw.js")
+      .catch((error) => {
+        console.warn("Prelude service worker registration failed:", error);
+      });
+  });
+}
 const root = $("#app"),
   filename = location.pathname.split("/").pop() || "index.html",
   page = filename === "reset.html" ? "reset-password.html" : filename;
