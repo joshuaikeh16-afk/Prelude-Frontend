@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account · Prelude</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="auth-page">
+  <main class="auth-container">
+
+    <a href="index.html" class="auth-logo">PRELUDE</a>
+
+    <section class="auth-card">
+
+      <div class="auth-heading">
+        <span class="eyebrow">GET STARTED</span>
+        <h1>Prepare for what's next.</h1>
+        <p>Create your Prelude account and start planning.</p>
+      </div>
+
+      <form id="signUpForm" class="auth-form">
+
+        <label>
+          <span>Nickname</span>
+          <input
+            type="text"
+            id="signUpNickname"
+            autocomplete="nickname"
+            placeholder="What should we call you?"
+            maxlength="50"
+            required
+          >
+        </label>
+
+        <label>
+          <span>Phone number</span>
+          <input
+            type="tel"
+            id="signUpPhone"
+            autocomplete="tel"
+            placeholder="+234 801 234 5678"
+            required
+          >
+          <small class="auth-hint">
+            We'll send a verification code to this number.
+          </small>
+        </label>
+
+        <div id="otpSection" class="otp-section" hidden>
+          <label>
+            <span>Verification code</span>
+            <input
+              type="text"
+              id="signUpOtp"
+              inputmode="numeric"
+              autocomplete="one-time-code"
+              placeholder="6-digit code"
+              maxlength="6"
+              pattern="[0-9]{6}"
+            >
+          </label>
+
+          <button type="button" id="verifyPhoneButton" class="auth-secondary">
+            Verify phone
+          </button>
+
+          <button type="button" id="resendOtpButton" class="auth-text-button">
+            Resend code
+          </button>
+        </div>
+
+        <div id="phoneVerified" class="phone-verified" hidden>
+          ✓ Phone number verified
+        </div>
+
+        <label>
+          <span>Email</span>
+          <input
+            type="email"
+            id="signUpEmail"
+            autocomplete="email"
+            placeholder="you@example.com"
+            required
+          >
+        </label>
+
+        <label>
+          <span>Password</span>
+          <input
+            type="password"
+            id="signUpPassword"
+            autocomplete="new-password"
+            placeholder="At least 8 characters"
+            minlength="8"
+            required
+          >
+        </label>
+
+        <label>
+          <span>Confirm password</span>
+          <input
+            type="password"
+            id="signUpConfirm"
+            autocomplete="new-password"
+            placeholder="Enter your password again"
+            minlength="8"
+            required
+          >
+        </label>
+
+        <p id="signUpError" class="auth-error"></p>
+
+        <button type="submit" id="createAccountButton" class="auth-submit">
+          Create account
+        </button>
+
+      </form>
+
+      <div class="auth-divider">
+        <span>or</span>
+      </div>
+
+      <button type="button" id="googleSignUp" class="google-button">
+        Continue with Google
+      </button>
+
+      <p class="auth-switch">
+        Already have an account?
+        <a href="signin.html">Sign in</a>
+      </p>
+
+    </section>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

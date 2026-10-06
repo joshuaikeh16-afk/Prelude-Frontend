@@ -1,0 +1,24 @@
+const {test} = require('node:test');
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const vm = require('node:vm');
+const path = require('node:path');
+test('Auth storage persists Prelude sessions while keeping Google tokens out of localStorage', () => {
+  const values = new Map();
+  let options;
+  const context = {URL, window: {PreludeConfig: {}, supabase: {createClient: (_url, _key, config) => {options = config; return {};}}}, localStorage: {getItem: key => values.get(key) || null, setItem: (key,value) => values.set(key,value), removeItem: key => values.delete(key)}};
+  vm.runInNewContext(fs.readFileSync(path.resolve(__dirname, '../js/supabase.js'), 'utf8'), context);
+  const key = options.auth.storageKey;
+  options.auth.storage.setItem(key, JSON.stringify({access_token: 'prelude-access', refresh_token: 'prelude-refresh', user: {id: 'user'}, provider_token: 'google-access', provider_refresh_token: 'google-refresh'}));
+  const saved = JSON.parse(values.get(key));
+  assert.equal(saved.access_token, 'prelude-access'); assert.equal(saved.refresh_token, 'prelude-refresh');
+  assert.equal(saved.provider_token, undefined); assert.equal(saved.provider_refresh_token, undefined);
+  assert.equal(context.window.PreludeConfig.consumeGoogleGrant(), 'google-refresh');
+  assert.equal(context.window.PreludeConfig.consumeGoogleGrant(), undefined);
+  options.auth.storage.setItem(key + '-code-verifier', 'verifier/plain-string');
+  assert.equal(options.auth.storage.getItem(key + '-code-verifier'), 'verifier/plain-string');
+  values.set(key, JSON.stringify({...saved, provider_refresh_token: 'legacy-google-token'}));
+  assert.equal(JSON.parse(options.auth.storage.getItem(key)).provider_refresh_token, undefined);
+  assert(!values.get(key).includes('legacy-google-token'));
+  options.auth.storage.removeItem(key); assert.equal(values.get(key), undefined);
+});

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Create account · Prelude</title>
+
+  <link rel="stylesheet" href="css/signup.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+
+<body class="signup-page">
+
+  <main class="signup">
+
+    <header class="signup-header">
+      <a href="index.html" class="signup-logo">PRELUDE</a>
+    </header>
+
+    <!-- STEP 1 -->
+    <section class="signup-content signup-screen active" id="accountScreen">
+
+      <div class="signup-heading">
+        <p class="signup-eyebrow">GET STARTED</p>
+
+        <h1>Create your account.</h1>
+
+        <p>Prepare for what's next.</p>
+      </div>
+
+      <form id="signUpForm" class="signup-form">
+
+        <div class="signup-field">
+          <label for="signUpEmail">Email</label>
+
+          <input
+            type="email"
+            id="signUpEmail"
+            autocomplete="email"
+            placeholder="you@example.com"
+            required
+          >
+        </div>
+
+        <div class="signup-field">
+          <label for="signUpPassword">Password</label>
+
+          <input
+            type="password"
+            id="signUpPassword"
+            autocomplete="new-password"
+            placeholder="At least 8 characters"
+            minlength="8"
+            required
+          >
+        </div>
+
+        <div class="signup-field">
+          <label for="signUpConfirm">Confirm password</label>
+
+          <input
+            type="password"
+            id="signUpConfirm"
+            autocomplete="new-password"
+            placeholder="Enter your password again"
+            minlength="8"
+            required
+          >
+        </div>
+
+        <p id="signUpError" class="signup-error"></p>
+
+        <button
+          type="submit"
+          id="createAccountButton"
+          class="signup-primary"
+        >
+          Create account
+        </button>
+
+      </form>
+
+      <div class="signup-divider">
+        <span>or</span>
+      </div>
+
+      <button
+        type="button"
+        id="googleSignUp"
+        class="signup-google"
+      >
+        <span class="google-letter">G</span>
+        Continue with Google
+      </button>
+
+      <p class="signup-footer">
+        Already have an account?
+        <a href="signin.html">Sign in</a>
+      </p>
+
+    </section>
+
+    <!-- STEP 2 -->
+    <section class="signup-content signup-screen" id="phoneScreen">
+
+      <button
+        type="button"
+        class="signup-back"
+        id="backToAccount"
+        aria-label="Go back"
+      >
+        ←
+      </button>
+
+      <div class="signup-heading">
+        <p class="signup-eyebrow">STEP 2 OF 3</p>
+
+        <h1>Verify your phone.</h1>
+
+        <p>
+          We'll send a verification code to your number.
+        </p>
+      </div>
+
+      <div class="signup-form">
+
+        <div class="signup-field">
+          <label for="signUpPhone">Phone number</label>
+
+          <input
+            type="tel"
+            id="signUpPhone"
+            autocomplete="tel"
+            placeholder="+234 801 234 5678"
+          >
+        </div>
+
+        <p id="phoneError" class="signup-error"></p>
+
+        <button
+          type="button"
+          id="sendOtpButton"
+          class="signup-primary"
+        >
+          Send verification code
+        </button>
+
+        <div id="otpArea" hidden>
+
+          <div class="signup-field">
+            <label for="signUpOtp">Verification code</label>
+
+            <input
+              type="text"
+              id="signUpOtp"
+              inputmode="numeric"
+              autocomplete="one-time-code"
+              placeholder="6-digit code"
+              maxlength="6"
+            >
+          </div>
+
+          <button
+            type="button"
+            id="verifyPhoneButton"
+            class="signup-primary"
+          >
+            Verify phone
+          </button>
+
+          <button
+            type="button"
+            id="resendOtpButton"
+            class="signup-secondary"
+          >
+            Resend code
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- STEP 3 -->
+    <section class="signup-content signup-screen" id="emailScreen">
+
+      <div class="signup-heading">
+        <p class="signup-eyebrow">STEP 3 OF 4</p>
+
+        <h1>Verify your email.</h1>
+
+        <p>Enter the 6-digit code we sent to your email.</p>
+      </div>
+
+      <div class="signup-form">
+
+        <div class="signup-field">
+          <label for="signUpEmailOtp">Verification code</label>
+
+          <input
+            type="text"
+            id="signUpEmailOtp"
+            inputmode="numeric"
+            autocomplete="one-time-code"
+            placeholder="6-digit code"
+            maxlength="6"
+          >
+        </div>
+
+        <p id="emailError" class="signup-error"></p>
+
+        <button
+          type="button"
+          id="verifyEmailButton"
+          class="signup-primary"
+        >
+          Verify email
+        </button>
+
+        <button
+          type="button"
+          id="resendEmailButton"
+          class="signup-secondary"
+        >
+          Resend code
+        </button>
+
+      </div>
+
+    </section>
+
+    <!-- STEP 3 -->
+    <section class="signup-content signup-screen" id="profileScreen">
+
+      <button
+        type="button"
+        class="signup-back"
+        id="backToPhone"
+        aria-label="Go back"
+      >
+        ←
+      </button>
+
+      <div class="signup-heading">
+        <p class="signup-eyebrow">STEP 3 OF 3</p>
+
+        <h1>Tell us about you.</h1>
+
+        <p>Just a couple of things before we get started.</p>
+      </div>
+
+      <form id="profileForm" class="signup-form">
+
+        <div class="signup-field">
+          <label for="signUpName">What's your name?</label>
+
+          <input
+            type="text"
+            id="signUpName"
+            autocomplete="name"
+            placeholder="Your full name"
+            required
+          >
+        </div>
+
+        <div class="signup-field">
+          <label for="signUpPreferredName">What should we call you?</label>
+
+          <input
+            type="text"
+            id="signUpPreferredName"
+            autocomplete="nickname"
+            placeholder="Your preferred name"
+            required
+          >
+        </div>
+
+        <p id="profileError" class="signup-error"></p>
+
+        <button
+          type="submit"
+          id="finishSignupButton"
+          class="signup-primary"
+        >
+          Continue
+        </button>
+
+      </form>
+
+    </section>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/signup.js"></script>
+
+</body>
+</html>
