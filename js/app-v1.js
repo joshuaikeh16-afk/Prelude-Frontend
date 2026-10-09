@@ -114,7 +114,7 @@ async function boot() {
   await synchronize();
   const name = p.nickname || p.name;
   const urls = await signedUrls("avatars", [p.avatar_path]);
-  root.innerHTML = `<div class="app-shell"><header class="topbar"><a href="index.html"><div class="wordmark"><span class="mark">${icon("spark")}</span>PRELUDE</div><p class="subtitle">${esc(page === "index.html" ? `A little preparation, ${name}.` : "Plan it. Live it. Remember it.")}</p></a><a class="avatar" href="profile.html" aria-label="Your profile">${urls[p.avatar_path] ? `<img src="${esc(urls[p.avatar_path])}" alt="">` : esc(name.slice(0, 1).toUpperCase())}</a></header><main class="page" id="pageContent"><div class="skeleton" aria-label="Loading"></div></main>${navigation(page)}</div>`;
+  root.innerHTML = `<div class="app-shell"><header class="topbar"><a href="index.html"><div class="wordmark"><span class="mark">${icon("spark")}</span>PRELUDE</div><p class="subtitle">${esc(page === "index.html" ? `A little preparation, ${name}.` : "Plan it. Live it. Remember it.")}</p></a><a class="avatar" href="profile.html" aria-label="Your profile">${urls[p.avatar_path] ? `<img src="${esc(urls[p.avatar_path])}" alt="">` : esc(name.slice(0, 1).toUpperCase())}</a></header><main class="page" id="pageContent"><div class="skeleton" aria-label="Loading"></div></main>${navigation(page)}<footer class="legal-footer"><a href="/privacy">Privacy Policy</a><span aria-hidden="true">·</span><a href="/terms">Terms of Service</a></footer></div>`;
   const renderers = {
     "index.html": home,
     "events.html": events,

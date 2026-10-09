@@ -19,7 +19,7 @@ function config(hostname, override) {
 test("Local HTML hosts use the same hostname for API calls on port 3000", () => {
   for (const hostname of ["localhost", "127.0.0.1", "0.0.0.0", "[::1]"])
     assert.equal(config(hostname).apiBase, `http://${hostname}:3000`);
-  assert.equal(config("prelude.example").apiBase, "https://prelude.example");
+  assert.equal(config("prelude.example").apiBase, "https://prelude-one.vercel.app");
   assert.equal(
     config("0.0.0.0", { apiBase: "https://api.example" }).apiBase,
     "https://api.example",
