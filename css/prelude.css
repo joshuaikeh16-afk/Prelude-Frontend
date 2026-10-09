@@ -1468,9 +1468,19 @@ button[aria-busy="true"] { cursor: progress; }
 .auth-shell .wordmark { margin-bottom: 32px; }
 .auth-provider { width: 100%; }
 .google-mark { width: 20px; height: 20px; flex-shrink: 0; }
-.password-control { position: relative; }
-.password-control input { padding-right: 66px; }
-.password-toggle { position: absolute; right: 5px; top: 2px; min-width: 56px; justify-content: center; }
+.password-control { position: relative; display: block; }
+.password-control input { padding-right: 52px; }
+.password-toggle {
+  position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+  width: 40px; height: 40px; min-width: 0; min-height: 0; padding: 0;
+  display: grid; place-items: center;
+  border: 0; border-radius: 10px; background: none; color: var(--muted);
+}
+.password-toggle:hover { color: var(--text); background: #ffffff08; }
+.password-toggle svg { width: 20px; height: 20px; }
+.password-toggle .eye-off { display: none; }
+.password-toggle[aria-pressed="true"] .eye { display: none; }
+.password-toggle[aria-pressed="true"] .eye-off { display: block; }
 .auth-step-names { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; font-size: 12px; color: var(--muted); margin: 12px 0 20px; }
 .avatar-upload-preview { width: 80px; height: 80px; object-fit: cover; border-radius: 24px; }
 .profile-identity { display: grid; grid-template-columns: minmax(0, 1fr); }

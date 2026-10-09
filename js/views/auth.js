@@ -21,7 +21,9 @@ import { authDestination, authMessage } from "../auth-session.js";
 import { googlePermissionOptions } from "../gmail-permission.js";
 const brand = `<a class="wordmark" href="signin.html"><span class="mark">${icon("spark")}</span>PRELUDE</a>`;
 const googleButton = `<button type="button" class="btn full auth-provider" id="google"><svg class="google-mark" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M21.6 12.23c0-.71-.06-1.39-.18-2.05H12v3.88h5.38a4.61 4.61 0 0 1-2 3.03v2.52h3.24c1.9-1.75 2.98-4.33 2.98-7.38Z"/><path fill="#34A853" d="M12 22c2.7 0 4.96-.9 6.62-2.39l-3.24-2.52c-.9.6-2.04.97-3.38.97-2.6 0-4.8-1.76-5.59-4.12H3.07v2.6A10 10 0 0 0 12 22Z"/><path fill="#FBBC05" d="M6.41 13.94a6 6 0 0 1 0-3.88v-2.6H3.07a10 10 0 0 0 0 9.08l3.34-2.6Z"/><path fill="#EA4335" d="M12 5.94c1.47 0 2.79.51 3.83 1.51l2.87-2.87A9.64 9.64 0 0 0 12 2a10 10 0 0 0-8.93 5.46l3.34 2.6C7.2 7.7 9.4 5.94 12 5.94Z"/></svg>Continue with Google</button>`;
-const passwordField = (label, name, autocomplete, value = "") => `<div class="password-field">${field(label, name, "password", value, `id="${name}" autocomplete="${autocomplete}" ${autocomplete === "new-password" ? 'minlength="8" maxlength="128"' : ""} required`)}<button type="button" class="text-btn password-toggle" data-toggle-password="${name}" aria-controls="${name}" aria-pressed="false">Show ${label.toLowerCase()}</button></div>`;
+const eyeIcon = `<svg class="eye" viewBox="0 0 24 24" aria-hidden="true"><path d="M1.5 12S5.5 5 12 5s10.5 7 10.5 7-4 7-10.5 7S1.5 12 1.5 12Z"/><circle cx="12" cy="12" r="3"/></svg>`;
+const eyeOffIcon = `<svg class="eye-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.9 5.2A10.6 10.6 0 0 1 12 5c6.5 0 10.5 7 10.5 7a17.7 17.7 0 0 1-3.2 4.1"/><path d="M6.6 6.6A17.4 17.4 0 0 0 1.5 12S5.5 19 12 19c1.7 0 3.2-.4 4.5-1.1"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/><path d="M3 3l18 18"/></svg>`;
+const passwordField = (label, name, autocomplete, value = "") => `<label for="${name}">${esc(label)}<span class="password-control"><input id="${name}" name="${name}" type="password" value="${esc(value)}" autocomplete="${autocomplete}" ${autocomplete === "new-password" ? 'minlength="8" maxlength="128"' : ""} required><button type="button" class="password-toggle" data-toggle-password="${name}" data-label="${esc(label.toLowerCase())}" aria-controls="${name}" aria-pressed="false" aria-label="Show ${esc(label.toLowerCase())}">${eyeIcon}${eyeOffIcon}</button></span></label>`;
 function bindPasswordToggles(root) {
   root.querySelectorAll("[data-toggle-password]").forEach((button) => {
     button.onclick = () => {
@@ -29,7 +31,10 @@ function bindPasswordToggles(root) {
       const visible = input.type === "password";
       input.type = visible ? "text" : "password";
       button.setAttribute("aria-pressed", String(visible));
-      button.textContent = `${visible ? "Hide" : "Show"} ${input.name === "confirm" ? "confirm password" : input.name === "password" ? "password" : "new password"}`;
+      button.setAttribute(
+        "aria-label",
+        `${visible ? "Hide" : "Show"} ${button.dataset.label}`,
+      );
     };
   });
 }
