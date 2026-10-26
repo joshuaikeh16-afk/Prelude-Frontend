@@ -26,25 +26,8 @@ const origin = process.env.PRELUDE_TEST_ORIGIN || "http://127.0.0.1:8081";
         body: "window.supabase={createClient:()=>window.__db}",
       }),
     );
-    let mailAccounts = [{id: "mail-1", email: "connected@example.com", auto_import: true, last_scan_at: null}];
-    let mailSuggestions = [{id: "suggestion-1", source_subject: "Appointment confirmed", source_sender: "organizer@example.com", confidence: "review", payload: {title: "Email appointment", date: new Date(Date.now() + 5 * 86400000).toISOString().slice(0, 10), time: "14:00", timezone: "Africa/Lagos", location: "Lagos", description: "Confirm the details"}}];
     await page.route(/^http:\/\/(?:localhost|127\.0\.0\.1):3000\/api\//, (route) => {
       const url = route.request().url();
-      if (url.includes("/api/mail/")) {
-        const method = route.request().method();
-        const input = method === "GET" ? {} : route.request().postDataJSON();
-        let body;
-        if (url.includes("connections")) {
-          if (method === "POST") mailAccounts[0].auto_import = input.autoImport;
-          if (method === "DELETE") { mailAccounts = []; mailSuggestions = []; }
-          body = method === "GET" ? {configured: mode === "mail", connections: mode === "mail" ? mailAccounts : []} : {success: true, revoked: true};
-        } else if (url.includes("scan")) body = {checked: 20, detected: 1, imported: 1, hasMore: false};
-        else if (url.includes("suggestions")) {
-          if (method === "POST") mailSuggestions = [];
-          body = method === "GET" ? {suggestions: mailSuggestions} : {success: true, eventId: "event-1"};
-        } else body = {url: "https://accounts.google.com/o/oauth2/v2/auth"};
-        return route.fulfill({contentType: "application/json", body: JSON.stringify(body)});
-      }
       const body = url.includes("holidays")
         ? mode === "holidays" ? {available: true, partial: true, note: "Showing recurring Nigerian holidays.", holidays: [{name: "Independence Day", date: "2026-10-01"}]} : { available: true, holidays: [] }
         : url.includes("places")
@@ -158,10 +141,6 @@ const origin = process.env.PRELUDE_TEST_ORIGIN || "http://127.0.0.1:8081";
             Date.now() + 5000,
           ).toISOString();
         if (mode === "empty") tables.events = [];
-        if (mode === "google-mail") {
-          window.PreludeConfig = {authCallback: {hasTokens: true}};
-          sessionStorage.setItem("prelude-gmail-permission", String(Date.now()));
-        }
         window.__tables = tables;
         window.__user = user;
         window.__calls = [];
@@ -301,7 +280,7 @@ const origin = process.env.PRELUDE_TEST_ORIGIN || "http://127.0.0.1:8081";
               return {error: null};
             },
             getSession: async () => ({
-              data: { session: { access_token: "test-token", ...(mode === "google-mail" ? {user, provider_refresh_token: "google-refresh"} : {}) } },
+              data: { session: { access_token: "test-token" } },
               error: null,
             }),
             onAuthStateChange: () => ({
@@ -652,15 +631,6 @@ const origin = process.env.PRELUDE_TEST_ORIGIN || "http://127.0.0.1:8081";
   assert.equal(await t.page.locator("#signinForm").count(), 1);
   assert.equal(await t.page.evaluate(() => sessionStorage.getItem("prelude-return-to")), "settings.html");
   await clean(t, "Deleted-account session recovers to sign-in without a page failure");
-  t = await setup("google-mail");
-  await loaded(t.page, "index.html");
-  await t.page.getByText("Gmail access granted. Clear invitations will be created automatically; manage this in Settings.").waitFor();
-  assert.equal(await t.page.evaluate(() => sessionStorage.getItem("prelude-gmail-permission")), null);
-  await clean(t, "Gmail permission finishes during Google sign-in without a separate connect step");
-  t = await setup("signed-out", 320);
-  await loaded(t.page, "signin.html");
-  assert.equal(await t.page.locator("#googleGmailPermission").isChecked(), false);
-  await clean(t, "Gmail permission is optional on the sign-in screen");
   t = await setup("holidays");
   await loaded(t.page, "calendar.html?date=2026-10-01");
   await t.page.locator('.calendar-day.has-holiday[data-date="2026-10-01"]').waitFor();
@@ -669,25 +639,6 @@ const origin = process.env.PRELUDE_TEST_ORIGIN || "http://127.0.0.1:8081";
   await t.page.locator("#nextMonth").click();
   assert.equal(await t.page.locator(".calendar-day.has-holiday").count(), 0);
   await clean(t, "National holiday dates are marked and refresh with the displayed month");
-  t = await setup("mail", 320);
-  await loaded(t.page, "settings.html#email-import");
-  await t.page.getByText("connected@example.com", {exact: true}).waitFor();
-  assert.equal(await t.page.locator('#email-import').evaluate(el => el.open), true);
-  await t.page.locator('.mail-advanced > summary').click();
-  const toggle = t.page.locator("[data-auto-mail]");
-  assert(await toggle.isChecked());
-  await toggle.uncheck();
-  await t.page.getByText("Events will stay as suggestions for review.", {exact: true}).waitFor();
-  await t.page.locator("[data-scan-mail]").click();
-  await t.page.getByText(/Checked 20 emails/).waitFor();
-  await t.page.locator("#mailSuggestions summary").click();
-  await t.page.locator('[data-mail-suggestion] [name=title]').fill("Reviewed email appointment");
-  await t.page.locator('[data-mail-suggestion] button[type=submit]').click();
-  await t.page.getByText("Event created.", {exact: false}).waitFor();
-  assert.equal(await t.page.locator("[data-mail-suggestion]").count(), 0);
-  await t.page.locator("[data-disconnect-mail]").click();
-  await t.page.getByText("Gmail disconnected. Events already created stay in Prelude.", {exact: true}).waitFor();
-  await clean(t, "Gmail secondary preferences, manual fallback, editable review and disconnect on a small phone");
   t = await setup("normal", 320);
   await loaded(t.page, "settings.html");
   assert(await t.page.locator('.settings-compact').evaluate(el => el.getBoundingClientRect().height < 760));

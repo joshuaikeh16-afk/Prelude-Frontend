@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap");
+@import url("home.css");
 :root {
   color-scheme: dark;
   --bg: #090b10;
@@ -9,8 +10,8 @@
   --line: rgba(255, 255, 255, 0.085);
   --text: #f2f3f7;
   --muted: #adb2c1;
-  --accent: #ff758c;
-  --accent-soft: rgba(255, 117, 140, 0.12);
+  --accent: #b8a5ff;
+  --accent-soft: rgba(184, 165, 255, 0.14);
   --good: #a5dac5;
   --bad: #ff9c83;
   --radius: 20px;
@@ -27,7 +28,7 @@ body {
   background:
     radial-gradient(
       ellipse at 90% 0,
-      rgba(107, 86, 134, 0.15),
+      rgba(143, 112, 219, 0.2),
       transparent 40%
     ),
     radial-gradient(
@@ -148,19 +149,29 @@ strong {
   display: flex;
   align-items: center;
   gap: 10px;
-  font: 700 13px Manrope;
-  letter-spacing: 3px;
+  font: 800 15px Manrope;
+  letter-spacing: 1.7px;
 }
 .mark {
-  width: 25px;
-  height: 28px;
+  width: 34px;
+  height: 34px;
   display: grid;
   place-content: center;
   color: var(--accent);
+  overflow: hidden;
+  border: 1px solid rgba(196, 181, 253, .2);
+  border-radius: 12px;
+  background: linear-gradient(145deg, rgba(167, 139, 250, .2), rgba(124, 92, 210, .08));
+  box-shadow: 0 6px 22px rgba(118, 89, 199, .16), inset 0 1px rgba(255,255,255,.08);
 }
 .mark svg {
-  width: 28px;
-  height: 28px;
+  width: 25px;
+  height: 25px;
+}
+.mark img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 .topbar .subtitle {
   font-size: 11px;
@@ -277,7 +288,8 @@ strong {
   border-color: transparent;
 }
 .btn.primary:hover {
-  background: #ff8c9f;
+  background: #cbbdff;
+  box-shadow: 0 8px 24px rgba(139, 109, 224, .22);
 }
 .btn.danger {
   color: var(--bad);
@@ -1565,9 +1577,8 @@ body:has(#timerBar) .app-shell { padding-bottom: calc(210px + env(safe-area-inse
 .calendar-day.has-holiday { box-shadow: inset 0 0 0 1px var(--accent); }
 .holiday-row { width: 100%; text-align: left; background: none; border-radius: 0; color: var(--text); }
 .holiday-row small { flex-shrink: 0; color: var(--muted); }
-.google-mail-choice { display: flex; align-items: flex-start; gap: 10px; margin-top: 14px; font-size: 12px; color: var(--muted); }
 
-/* Compact Settings only; shared Prelude cards and navigation retain their style. */
+/* Compact Settings only; shared Rixie cards and navigation retain their style. */
 .settings-compact { gap: 18px; }
 .settings-compact .settings-label { color: var(--muted); font-size: 12px; font-weight: 600; margin: 0 14px 8px; }
 .settings-compact .settings-group { padding: 0 16px; overflow: hidden; }
@@ -1591,12 +1602,6 @@ body:has(#timerBar) .app-shell { padding-bottom: calc(210px + env(safe-area-inse
 .settings-detail-body .recent-memories summary { padding: 12px 0; }
 .settings-compact .settings-signout { align-self: start; justify-self: start; min-height: 44px; padding: 8px 14px; }
 .settings-compact .form-feedback:empty { display: none; }
-.settings-compact .setting-status, .settings-compact .mail-consent { font-size: 13px; line-height: 1.6; margin: 0 0 12px; }
-.mail-account { padding: 10px 0 14px; border-bottom: 1px solid var(--line); }
-.mail-account .row { margin-top: 4px; gap: 8px; }
-.mail-advanced > summary { color: var(--muted); cursor: pointer; font-size: 12px; padding: 12px 0; min-height: 44px; }
-.settings-detail-body #mailHistory h3, .settings-detail-body #mailSuggestions > h3 { font-size: 14px; margin: 18px 0 8px; }
-.google-mail-choice input { flex-shrink: 0; margin-top: 2px; }
 
 /* Legal links */
 .legal-footer {

@@ -4231,3 +4231,7 @@ body {
 .forgot-password:hover {
   color: #ff3b81 !important;
 }
+body > .password-toggle,
+.auth-shell > .password-toggle {
+  display: none !important;
+}

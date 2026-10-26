@@ -46,7 +46,7 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Only handle Prelude's own static resources.
+  // Only handle Rixie's own static resources.
   if (url.origin !== self.location.origin) return;
 
   event.respondWith(
@@ -77,7 +77,7 @@ self.addEventListener("fetch", (event) => {
 });
 
 /*
- * Existing Prelude push notification support.
+ * Existing Rixie push notification support.
  */
 self.addEventListener("push", (event) => {
   let data;
@@ -89,7 +89,7 @@ self.addEventListener("push", (event) => {
   }
 
   event.waitUntil(
-    self.registration.showNotification(data.title || "Prelude", {
+    self.registration.showNotification(data.title || "Rixie", {
       body: data.body || "",
       tag: data.tag || "prelude",
       icon: "/icons/icon-192.png",
